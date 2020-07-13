@@ -93,42 +93,111 @@ public class MineWeeper {
 //                    }
 //                });
                 button1.addMouseListener(new EventListener1(){
-
+                    int[] index = indexmap.get(button1);
+                    @Override
+                    public void clickBoth(){
+                        count(index);
+                    }
                     @Override
                     public void clickLeft(){
-                        int[] index = indexmap.get(button1);
+                        if(marked.contains(Arrays.toString(index)))return;
                         if (opened.size() == 0) {
                             start(index);
                         }
-                        if (map[index[0]][index[1]] == -1) {
-                            button1.setBackground(Color.RED);
-                            button1.setText("-1");
-                            opened.add(Arrays.toString(index));
-                            lose();
-                        } else {
-                            openButton(index);
-                            if (opened.size() == ROW * COL - MineCount) suc();
-                        }
+                        leftclick(index);
                     }
                     @Override
                     public void clickRight(){
-                        int[] index = indexmap.get(button1);
-                        if(opened.contains(Arrays.toString(index)))return;
-                        if (!marked.contains(Arrays.toString(index))) {
-                            marked.add(Arrays.toString(index));
-                            button1.setBackground(Color.GRAY);
-                            label1.setText("雷数:"+(MineCount-marked.size()));
-                        }
-                        else {
-                            marked.remove(Arrays.toString(index));
-                            button1.setBackground(Color.yellow);
-                            label1.setText("雷数:"+(MineCount-marked.size()));
-                        }
+                        mark(index);
                     }
                 });
             }
         }
         f.add(con, BorderLayout.CENTER);
+    }
+
+    private void mark(int[] index){
+        JButton button1=buttons[index[0]][index[1]];
+        if(opened.contains(Arrays.toString(index)))return;
+        if (!marked.contains(Arrays.toString(index))) {
+            marked.add(Arrays.toString(index));
+            button1.setBackground(Color.GRAY);
+            label1.setText("雷数:"+(MineCount-marked.size()));
+        }
+        else {
+            marked.remove(Arrays.toString(index));
+            button1.setBackground(Color.yellow);
+            label1.setText("雷数:"+(MineCount-marked.size()));
+        }
+    }
+
+    public void count(int[] index){
+        countOpen(index);
+        countMark(index);
+    }
+
+    private void countOpen(int[] index){
+        if(!opened.contains(Arrays.toString(index)))return;
+        int count1=0;
+        for (int i = 0; i < 8; i++) {
+            index[0] += dx[i];
+            index[1] += dy[i];
+            if (index[0] >= 0 && index[0] < ROW && index[1] >= 0 && index[1] < COL) {
+                if(marked.contains(Arrays.toString(index)))count1++;
+            }
+            index[0] -= dx[i];
+            index[1] -= dy[i];
+        }
+        if(count1==map[index[0]][index[1]]){
+            for (int i = 0; i < 8; i++) {
+                index[0] += dx[i];
+                index[1] += dy[i];
+                if (index[0] >= 0 && index[0] < ROW && index[1] >= 0 && index[1] < COL) {
+                    leftclick(index);
+                }
+                index[0] -= dx[i];
+                index[1] -= dy[i];
+            }
+        }
+    }
+
+    private void countMark(int[] index){
+        if(!opened.contains(Arrays.toString(index)))return;
+        int count2=0;
+        for (int i = 0; i < 8; i++) {
+            index[0] += dx[i];
+            index[1] += dy[i];
+            if (index[0] >= 0 && index[0] < ROW && index[1] >= 0 && index[1] < COL) {
+                if(!opened.contains(Arrays.toString(index)))count2++;
+            }
+            index[0] -= dx[i];
+            index[1] -= dy[i];
+        }
+        if(count2==map[index[0]][index[1]]){
+            for (int i = 0; i < 8; i++) {
+                index[0] += dx[i];
+                index[1] += dy[i];
+                if (index[0] >= 0 && index[0] < ROW && index[1] >= 0 && index[1] < COL) {
+                    if(!marked.contains(Arrays.toString(index))) mark(index);
+                }
+                index[0] -= dx[i];
+                index[1] -= dy[i];
+            }
+        }
+    }
+
+    private void leftclick(int[] index){
+        JButton button1=buttons[index[0]][index[1]];
+        if(marked.contains(Arrays.toString(index)))return;
+        if (map[index[0]][index[1]] == -1) {
+            button1.setBackground(Color.RED);
+            button1.setText("-1");
+            opened.add(Arrays.toString(index));
+            lose();
+        } else {
+            openButton(index);
+            if (opened.size() == ROW * COL - MineCount) suc();
+        }
     }
 
     private void suc() {
@@ -193,7 +262,7 @@ public class MineWeeper {
     }
 
     private void openButton(int[] index) {
-        if(marked.contains(Arrays.toString(index)))return;
+        if(opened.contains(Arrays.toString(index)))return;
         JButton button1 = buttons[index[0]][index[1]];
         button1.setText(map[index[0]][index[1]] + "");
         button1.setBackground(Color.green);
@@ -212,6 +281,7 @@ public class MineWeeper {
                 index[1] -= dy[i];
             }
         }
+        countOpen(index);
     }
 
     private void setMap() {
@@ -235,7 +305,6 @@ public class MineWeeper {
 class EventListener1 extends MouseAdapter {
     private boolean flag=false;
     private boolean flaghelp=false;
-    private int count=0;
     @Override
     public void mousePressed(MouseEvent e){
         if(e.getModifiersEx()==(MouseEvent.BUTTON3_DOWN_MASK + MouseEvent.BUTTON1_DOWN_MASK)){
@@ -260,7 +329,6 @@ class EventListener1 extends MouseAdapter {
         }
     }
     public void clickBoth(){
-        System.out.println(count++);
     }
     public void clickLeft(){
     }
