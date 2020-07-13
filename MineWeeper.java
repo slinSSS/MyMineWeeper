@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.*;
 import javax.swing.Timer;
 
@@ -13,8 +15,9 @@ public class MineWeeper {
 
     int[][] map = new int[ROW][COL];
     JButton[][] buttons = new JButton[ROW][COL];
-    Map<JButton, int[]> indexmap = new HashMap();
+    Map<JButton, int[]> indexmap = new HashMap<>();
     Set<String> opened = new HashSet<>();
+    Set<String> marked = new HashSet<>();
     int time = 0;
 
     JFrame f = new JFrame();
@@ -70,22 +73,52 @@ public class MineWeeper {
                 indexmap.put(button1, new int[]{i, j});
                 con.add(button1);
                 buttons[i][j] = button1;
-                button1.addActionListener(new ActionListener() {
+//                button1.addActionListener(new ActionListener() {
+//                    @Override
+//                    public void actionPerformed(ActionEvent e) {
+//                        int[] index = indexmap.get(button1);
+//                        if (opened.size() == 0) {
+//                            start(index);
+//                        }
+//
+//                        if (map[index[0]][index[1]] == -1) {
+//                            button1.setBackground(Color.RED);
+//                            button1.setText("-1");
+//                            opened.add(Arrays.toString(index));
+//                            lose();
+//                        } else {
+//                            openButton(index);
+//                            if (opened.size() == ROW * COL - MineCount) suc();
+//                        }
+//                    }
+//                });
+                button1.addMouseListener(new MouseAdapter(){
                     @Override
-                    public void actionPerformed(ActionEvent e) {
+                    public void mouseClicked(MouseEvent e){
                         int[] index = indexmap.get(button1);
-                        if (opened.size() == 0) {
-                            start(index);
+                        if(e.getButton()== MouseEvent.BUTTON1&&!marked.contains(Arrays.toString(index))){
+                            if (opened.size() == 0) {
+                                start(index);
+                            }
+                            if (map[index[0]][index[1]] == -1) {
+                                button1.setBackground(Color.RED);
+                                button1.setText("-1");
+                                opened.add(Arrays.toString(index));
+                                lose();
+                            } else {
+                                openButton(index);
+                                if (opened.size() == ROW * COL - MineCount) suc();
+                            }
                         }
-
-                        if (map[index[0]][index[1]] == -1) {
-                            button1.setBackground(Color.RED);
-                            button1.setText("-1");
-                            opened.add(Arrays.toString(index));
-                            lose();
-                        } else {
-                            openButton(index);
-                            if (opened.size() == ROW * COL - MineCount) suc();
+                        else if(e.getButton()==MouseEvent.BUTTON3){
+                            if (!marked.contains(Arrays.toString(index))) {
+                                marked.add(Arrays.toString(index));
+                                button1.setBackground(Color.GRAY);
+                            }
+                            else {
+                                marked.remove(Arrays.toString(index));
+                                button1.setBackground(Color.yellow);
+                            }
                         }
                     }
                 });
@@ -188,5 +221,19 @@ public class MineWeeper {
 
     public static void main(String[] args) {
         MineWeeper a = new MineWeeper();
+    }
+}
+
+class EventListener1 extends MouseAdapter {
+    public void mouseClicked(MouseEvent e) {
+        if (e.getButton() == e.BUTTON1) {
+            clickLeft();
+        } else if (e.getButton() == e.BUTTON3) {
+            clickRight();
+        }
+    }
+    private void clickLeft(){
+    }
+    private void clickRight(){
     }
 }
