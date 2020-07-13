@@ -13,7 +13,7 @@ public class MineWeeper {
     final int[] dx = new int[]{-1, -1, -1, 0, 0, 1, 1, 1};
     final int[] dy = new int[]{1, 0, -1, 1, -1, 1, 0, -1};
 
-    boolean lose,suc;
+    boolean lose, suc;
     int[][] map = new int[ROW][COL];
     JButton[][] buttons = new JButton[ROW][COL];
     Map<JButton, int[]> indexmap = new HashMap<>();
@@ -93,22 +93,25 @@ public class MineWeeper {
 //                        }
 //                    }
 //                });
-                button1.addMouseListener(new EventListener1(){
+                button1.addMouseListener(new EventListener1() {
                     int[] index = indexmap.get(button1);
+
                     @Override
-                    public void clickBoth(){
+                    public void clickBoth() {
                         count(index);
                     }
+
                     @Override
-                    public void clickLeft(){
-                        if(marked.contains(Arrays.toString(index)))return;
+                    public void clickLeft() {
+                        if (marked.contains(Arrays.toString(index))) return;
                         if (opened.size() == 0) {
                             start(index);
                         }
                         leftclick(index);
                     }
+
                     @Override
-                    public void clickRight(){
+                    public void clickRight() {
                         mark(index);
                     }
                 });
@@ -117,45 +120,44 @@ public class MineWeeper {
         f.add(con, BorderLayout.CENTER);
     }
 
-    private void mark(int[] index){
-        JButton button1=buttons[index[0]][index[1]];
-        if(opened.contains(Arrays.toString(index)))return;
+    private void mark(int[] index) {
+        JButton button1 = buttons[index[0]][index[1]];
+        if (opened.contains(Arrays.toString(index))) return;
         if (!marked.contains(Arrays.toString(index))) {
             marked.add(Arrays.toString(index));
             button1.setBackground(Color.GRAY);
-            label1.setText("雷数:"+(MineCount-marked.size()));
-        }
-        else {
+            label1.setText("雷数:" + (MineCount - marked.size()));
+        } else {
             marked.remove(Arrays.toString(index));
             button1.setBackground(Color.yellow);
-            label1.setText("雷数:"+(MineCount-marked.size()));
+            label1.setText("雷数:" + (MineCount - marked.size()));
         }
     }
 
-    public void count(int[] index){
+    private void count(int[] index) {
         countOpen(index);
         countMark(index);
     }
 
-    private void countOpen(int[] index){
-        if(!opened.contains(Arrays.toString(index)))return;
-        int count1=0;
+    private void countOpen(int[] index) {
+        if (!opened.contains(Arrays.toString(index))) return;
+        int count1 = 0;
         for (int i = 0; i < 8; i++) {
             index[0] += dx[i];
             index[1] += dy[i];
             if (index[0] >= 0 && index[0] < ROW && index[1] >= 0 && index[1] < COL) {
-                if(marked.contains(Arrays.toString(index)))count1++;
+                if (marked.contains(Arrays.toString(index))) count1++;
             }
             index[0] -= dx[i];
             index[1] -= dy[i];
         }
-        if(count1==map[index[0]][index[1]]){
+        if (count1 == map[index[0]][index[1]]) {
             for (int i = 0; i < 8; i++) {
                 index[0] += dx[i];
                 index[1] += dy[i];
                 if (index[0] >= 0 && index[0] < ROW && index[1] >= 0 && index[1] < COL) {
                     leftclick(index);
-                    if(lose||suc)break;
+                    if (lose || suc) break;
                 }
                 index[0] -= dx[i];
                 index[1] -= dy[i];
@@ -163,24 +165,24 @@ public class MineWeeper {
         }
     }
 
-    private void countMark(int[] index){
-        if(!opened.contains(Arrays.toString(index)))return;
-        int count2=0;
+    private void countMark(int[] index) {
+        if (!opened.contains(Arrays.toString(index))) return;
+        int count2 = 0;
         for (int i = 0; i < 8; i++) {
             index[0] += dx[i];
             index[1] += dy[i];
             if (index[0] >= 0 && index[0] < ROW && index[1] >= 0 && index[1] < COL) {
-                if(!opened.contains(Arrays.toString(index)))count2++;
+                if (!opened.contains(Arrays.toString(index))) count2++;
             }
             index[0] -= dx[i];
             index[1] -= dy[i];
         }
-        if(count2==map[index[0]][index[1]]){
+        if (count2 == map[index[0]][index[1]]) {
             for (int i = 0; i < 8; i++) {
                 index[0] += dx[i];
                 index[1] += dy[i];
                 if (index[0] >= 0 && index[0] < ROW && index[1] >= 0 && index[1] < COL) {
-                    if(!marked.contains(Arrays.toString(index))) mark(index);
+                    if (!marked.contains(Arrays.toString(index))) mark(index);
                 }
                 index[0] -= dx[i];
                 index[1] -= dy[i];
@@ -188,9 +190,9 @@ public class MineWeeper {
         }
     }
 
-    private void leftclick(int[] index){
-        JButton button1=buttons[index[0]][index[1]];
-        if(marked.contains(Arrays.toString(index)))return;
+    private void leftclick(int[] index) {
+        JButton button1 = buttons[index[0]][index[1]];
+        if (marked.contains(Arrays.toString(index))) return;
         if (map[index[0]][index[1]] == -1) {
             button1.setBackground(Color.RED);
             button1.setText("-1");
@@ -203,7 +205,7 @@ public class MineWeeper {
     }
 
     private void suc() {
-        suc=true;
+        suc = true;
         timer.stop();
         button.setText("你赢了");
         JOptionPane.showMessageDialog(f, "你赢了，点击确定重新开始");
@@ -211,7 +213,7 @@ public class MineWeeper {
     }
 
     private void lose() {
-        lose=true;
+        lose = true;
         button.setText("你输了");
         for (int i = 0; i < ROW; i++) {
             for (int j = 0; j < COL; j++) {
@@ -247,8 +249,8 @@ public class MineWeeper {
     }
 
     private void start(int[] index) {
-        suc=false;
-        lose=false;
+        suc = false;
+        lose = false;
         addMine(index);
         setMap();
         label1.setText("雷数:" + MineCount);
@@ -268,7 +270,7 @@ public class MineWeeper {
     }
 
     private void openButton(int[] index) {
-        if(opened.contains(Arrays.toString(index)))return;
+        if (opened.contains(Arrays.toString(index))) return;
         JButton button1 = buttons[index[0]][index[1]];
         button1.setText(map[index[0]][index[1]] + "");
         button1.setBackground(Color.green);
@@ -309,23 +311,24 @@ public class MineWeeper {
 }
 
 class EventListener1 extends MouseAdapter {
-    private boolean flag=false;
-    private boolean flaghelp=false;
+    private boolean flag = false;
+    private boolean flaghelp = false;
+
     @Override
-    public void mousePressed(MouseEvent e){
-        if(e.getModifiersEx()==(MouseEvent.BUTTON3_DOWN_MASK + MouseEvent.BUTTON1_DOWN_MASK)){
+    public void mousePressed(MouseEvent e) {
+        if (e.getModifiersEx() == (MouseEvent.BUTTON3_DOWN_MASK + MouseEvent.BUTTON1_DOWN_MASK)) {
             clickBoth();
-            flag=true;
+            flag = true;
         }
     }
+
     @Override
     public void mouseClicked(MouseEvent e) {
-        if(flag) {
-            if(flaghelp) {
+        if (flag) {
+            if (flaghelp) {
                 flaghelp = false;
                 flag = false;
-            }
-            else flaghelp=true;
+            } else flaghelp = true;
             return;
         }
         if (e.getButton() == MouseEvent.BUTTON1) {
@@ -334,10 +337,13 @@ class EventListener1 extends MouseAdapter {
             clickRight();
         }
     }
-    public void clickBoth(){
+
+    public void clickBoth() {
     }
-    public void clickLeft(){
+
+    public void clickLeft() {
     }
-    public void clickRight(){
+
+    public void clickRight() {
     }
 }
