@@ -13,6 +13,7 @@ public class MineWeeper {
     final int[] dx = new int[]{-1, -1, -1, 0, 0, 1, 1, 1};
     final int[] dy = new int[]{1, 0, -1, 1, -1, 1, 0, -1};
 
+    boolean lose,suc;
     int[][] map = new int[ROW][COL];
     JButton[][] buttons = new JButton[ROW][COL];
     Map<JButton, int[]> indexmap = new HashMap<>();
@@ -154,6 +155,7 @@ public class MineWeeper {
                 index[1] += dy[i];
                 if (index[0] >= 0 && index[0] < ROW && index[1] >= 0 && index[1] < COL) {
                     leftclick(index);
+                    if(lose||suc)break;
                 }
                 index[0] -= dx[i];
                 index[1] -= dy[i];
@@ -201,6 +203,7 @@ public class MineWeeper {
     }
 
     private void suc() {
+        suc=true;
         timer.stop();
         button.setText("你赢了");
         JOptionPane.showMessageDialog(f, "你赢了，点击确定重新开始");
@@ -208,6 +211,7 @@ public class MineWeeper {
     }
 
     private void lose() {
+        lose=true;
         button.setText("你输了");
         for (int i = 0; i < ROW; i++) {
             for (int j = 0; j < COL; j++) {
@@ -243,6 +247,8 @@ public class MineWeeper {
     }
 
     private void start(int[] index) {
+        suc=false;
+        lose=false;
         addMine(index);
         setMap();
         label1.setText("雷数:" + MineCount);
