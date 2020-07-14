@@ -22,14 +22,28 @@ public class Menu extends JMenuBar {
             @Override
             public void actionPerformed(ActionEvent e) {
                 mainFrame.restart();
-
             }
         });
         MenuGame.add(menuItemEasy);
         menuItemEasy.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mainFrame.restart();
+                mainFrame.restartForAnotherSetting(new Setting("easy"));
+            }
+        });
+        MenuGame.add(menuItemMedium);
+        menuItemMedium.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mainFrame.restartForAnotherSetting(new Setting("medium"));
+
+            }
+        });
+        MenuGame.add(menuItemHard);
+        menuItemHard.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mainFrame.restartForAnotherSetting(new Setting("hard"));
             }
         });
 

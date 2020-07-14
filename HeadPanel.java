@@ -3,12 +3,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class HeadPanel extends JPanel {
-    int MineCount=99;
+    int MineCount;
     int time;
 
-    JButton button = new JButton("重新开始");
-    JLabel label1 = new JLabel("雷数:" + MineCount);
-    JLabel label2 = new JLabel("用时:" + time + 's');
+    JButton button=new JButton();
+    JLabel label1=new JLabel();
+    JLabel label2=new JLabel();
     MineWeeper mainframe;
     Timer timer = new Timer(1000, new ActionListener() {
         @Override
@@ -21,9 +21,7 @@ public class HeadPanel extends JPanel {
 
     public HeadPanel(MineWeeper mainframe){
         this.mainframe=mainframe;
-        init();
-    }
-    public void init(){
+        this.init();
         this.add(label1);
         this.add(button);
         button.addActionListener(new ActionListener() {
@@ -35,8 +33,14 @@ public class HeadPanel extends JPanel {
         this.add(label2);
         timerStop();
     }
-
-
+    public void init(){
+        timer.stop();
+        time=0;
+        MineCount=mainframe.getSetting().getMineCount();
+        button.setText("重新开始");
+        label1.setText("雷数:" + MineCount);
+        label2.setText("用时:" + time + 's');
+    }
 
     public void timerStop(){
         timer.stop();
@@ -49,9 +53,5 @@ public class HeadPanel extends JPanel {
     }
     public void setLabel1Text(String Text){
         label1.setText(Text);
-    }
-
-    public int getMineCount() {
-        return MineCount;
     }
 }
