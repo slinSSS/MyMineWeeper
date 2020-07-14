@@ -2,12 +2,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class EventListener1 extends MouseAdapter {
-    private boolean flaghelp = false;
     private int id=0;
 
-    public void init(){
-        flaghelp=false;
-    }
     @Override
     public void mousePressed(MouseEvent e) {
         int[] index=((MineButton)e.getSource()).getIndex();

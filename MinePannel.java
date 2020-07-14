@@ -60,7 +60,6 @@ public class MinePannel extends JPanel {
                 buttons[i][j].init();
             }
         }
-        listener.init();
     }
 
     private void count(int[] index) {
