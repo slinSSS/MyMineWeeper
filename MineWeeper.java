@@ -9,41 +9,37 @@ import javax.swing.Timer;
 
 public class MineWeeper extends JFrame {
 
-    Setting setting=new Setting(16,30,99,true);
-    HeadPanel head=new HeadPanel(this);
-    MinePannel body=new MinePannel(this);
+    Setting setting = new Setting("easy");
+    HeadPanel head = new HeadPanel(this);
+    MinePannel body = new MinePannel(this);
 
 
     public MineWeeper() {
-        this.setSize(1600, 650);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setLayout(new BorderLayout());
         this.setTitle("扫雷");
+        this.setVisible(true);
 
         this.add(head, BorderLayout.NORTH);
         this.setJMenuBar(new Menu(this));
         this.add(body);
+
         this.pack();
         this.validate();
-
-        this.setVisible(true);
     }
 
 
     public void restart() {
         head.init();
         body.init();
-
-        this.pack();
-        this.validate();
     }
 
-    public void restartForAnotherSetting(Setting setting){
-        this.setting=setting;
+    public void restartForAnotherSetting(Setting setting) {
+        this.setting = setting;
         head.init();
         this.remove(body);
-        body=new MinePannel(this);
+        body = new MinePannel(this);
         this.add(body);
 
         this.pack();

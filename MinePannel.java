@@ -7,11 +7,11 @@ public class MinePannel extends JPanel {
     final int[] dx = new int[]{-1, -1, -1, 0, 0, 1, 1, 1};
     final int[] dy = new int[]{1, 0, -1, 1, -1, 1, 0, -1};
 
-    boolean lose,suc;
-    int ROW,COL,MineCount,openCount,markCount;
+    boolean lose, suc;
+    int ROW, COL, MineCount, openCount, markCount;
     MineButton[][] buttons;
     MineWeeper mainFrame;
-    EventListener1 listener=new EventListener1(){
+    EventListener1 listener = new EventListener1() {
         @Override
         public void clickBoth(int[] index) {
             count(index);
@@ -20,7 +20,7 @@ public class MinePannel extends JPanel {
         @Override
         public void clickLeft(int[] index) {
             if (buttons[index[0]][index[1]].isMarked()) return;
-            if (openCount==0) {
+            if (openCount == 0) {
                 start(index);
             }
             leftclick(index);
@@ -32,31 +32,31 @@ public class MinePannel extends JPanel {
         }
     };
 
-    public MinePannel(MineWeeper mainFrame){
-        this.mainFrame=mainFrame;
-        ROW=mainFrame.getSetting().getROW();
-        COL=mainFrame.getSetting().getCOL();
-        MineCount=mainFrame.getSetting().getMineCount();
-        buttons =new MineButton[ROW][COL];
-        for(int i=0;i<ROW;i++){
-            for(int j=0;j<COL;j++){
-                buttons[i][j]= new MineButton(new int[]{i,j});
+    public MinePannel(MineWeeper mainFrame) {
+        this.mainFrame = mainFrame;
+        ROW = mainFrame.getSetting().getROW();
+        COL = mainFrame.getSetting().getCOL();
+        MineCount = mainFrame.getSetting().getMineCount();
+        buttons = new MineButton[ROW][COL];
+        for (int i = 0; i < ROW; i++) {
+            for (int j = 0; j < COL; j++) {
+                buttons[i][j] = new MineButton(new int[]{i, j});
                 buttons[i][j].addMouseListener(listener);
             }
         }
         this.setLayout(new GridLayout(ROW, COL));
-        for(int i=0;i<ROW;i++){
-            for(int j=0;j<COL;j++){
+        for (int i = 0; i < ROW; i++) {
+            for (int j = 0; j < COL; j++) {
                 this.add(buttons[i][j]);
             }
         }
     }
 
-    public void init(){
-        openCount=0;
-        markCount=0;
-        for(int i=0;i<ROW;i++){
-            for(int j=0;j<COL;j++){
+    public void init() {
+        openCount = 0;
+        markCount = 0;
+        for (int i = 0; i < ROW; i++) {
+            for (int j = 0; j < COL; j++) {
                 buttons[i][j].init();
             }
         }
@@ -119,7 +119,7 @@ public class MinePannel extends JPanel {
     }
 
     private void leftclick(int[] index) {
-        if (buttons[index[0]][index[1]].isMarked()||buttons[index[0]][index[1]].isOpened()) return;
+        if (buttons[index[0]][index[1]].isMarked() || buttons[index[0]][index[1]].isOpened()) return;
         if (buttons[index[0]][index[1]].getId() == -1) {
             buttons[index[0]][index[1]].setOpened(true);
             buttons[index[0]][index[1]].setBackground(Color.RED);
@@ -130,47 +130,48 @@ public class MinePannel extends JPanel {
         }
     }
 
-    private void start(int[] index){
-        lose=false;
-        suc=false;
+    private void start(int[] index) {
+        lose = false;
+        suc = false;
         addMine(index);
         setButtonsId();
-        mainFrame.getHead().setLabel1Text("雷数:"+MineCount);
+        mainFrame.getHead().setLabel1Text("雷数:" + MineCount);
         mainFrame.getHead().timerStart();
     }
 
-    private void setButtonsId(){
+    private void setButtonsId() {
         for (int i = 0; i < ROW; i++) {
             for (int j = 0; j < COL; j++) {
                 if (buttons[i][j].getId() == 0) {
                     for (int n = 0; n < 8; n++) {
                         int x = i + dx[n], y = j + dy[n];
-                        if (x >= 0 && x < ROW && y >= 0 && y < COL && buttons[x][y].getId() == -1) buttons[i][j].setId(buttons[i][j].getId()+1);
+                        if (x >= 0 && x < ROW && y >= 0 && y < COL && buttons[x][y].getId() == -1)
+                            buttons[i][j].setId(buttons[i][j].getId() + 1);
                     }
                 }
             }
         }
     }
 
-    private void addMine(int[] index){
-        Random a=new Random();
-        for(int i=0;i<MineCount;){
-            int x=a.nextInt(ROW);
-            int y=a.nextInt(COL);
-            if(buttons[x][y].getId()!=-1&& !(Math.abs(x - index[0]) <= 1 && Math.abs(y - index[1]) <= 1)){
+    private void addMine(int[] index) {
+        Random a = new Random();
+        for (int i = 0; i < MineCount; ) {
+            int x = a.nextInt(ROW);
+            int y = a.nextInt(COL);
+            if (buttons[x][y].getId() != -1 && !(Math.abs(x - index[0]) <= 1 && Math.abs(y - index[1]) <= 1)) {
                 i++;
                 buttons[x][y].setId(-1);
             }
         }
     }
 
-    private void openButton(int[] index){
+    private void openButton(int[] index) {
         openCount++;
         buttons[index[0]][index[1]].setOpened(true);
         countOpen(index);
     }
 
-    private void mark(int[] index){
+    private void mark(int[] index) {
         if (buttons[index[0]][index[1]].isOpened()) return;
         if (!buttons[index[0]][index[1]].isMarked()) {
             markCount++;
@@ -183,8 +184,8 @@ public class MinePannel extends JPanel {
         }
     }
 
-    public void lose(){
-        lose=true;
+    public void lose() {
+        lose = true;
         mainFrame.getHead().setButtonText("你输了");
         for (int i = 0; i < ROW; i++) {
             for (int j = 0; j < COL; j++) {
@@ -201,7 +202,7 @@ public class MinePannel extends JPanel {
         mainFrame.restart();
     }
 
-    public void suc(){
+    public void suc() {
         suc = true;
         mainFrame.head.timerStop();
         mainFrame.head.setButtonText("你赢了");

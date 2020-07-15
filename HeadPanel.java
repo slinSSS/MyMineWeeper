@@ -6,9 +6,9 @@ public class HeadPanel extends JPanel {
     int MineCount;
     int time;
 
-    JButton button=new JButton();
-    JLabel label1=new JLabel();
-    JLabel label2=new JLabel();
+    JButton button = new JButton();
+    JLabel label1 = new JLabel();
+    JLabel label2 = new JLabel();
     MineWeeper mainframe;
     Timer timer = new Timer(1000, new ActionListener() {
         @Override
@@ -19,8 +19,8 @@ public class HeadPanel extends JPanel {
         }
     });
 
-    public HeadPanel(MineWeeper mainframe){
-        this.mainframe=mainframe;
+    public HeadPanel(MineWeeper mainframe) {
+        this.mainframe = mainframe;
         this.init();
         this.add(label1);
         this.add(button);
@@ -33,25 +33,29 @@ public class HeadPanel extends JPanel {
         this.add(label2);
         timerStop();
     }
-    public void init(){
+
+    public void init() {
         timer.stop();
-        time=0;
-        MineCount=mainframe.getSetting().getMineCount();
+        time = 0;
+        MineCount = mainframe.getSetting().getMineCount();
         button.setText("重新开始");
         label1.setText("雷数:" + MineCount);
         label2.setText("用时:" + time + 's');
     }
 
-    public void timerStop(){
+    public void timerStop() {
         timer.stop();
     }
-    public void timerStart(){
+
+    public void timerStart() {
         timer.start();
     }
-    public void setButtonText(String Text){
+
+    public void setButtonText(String Text) {
         button.setText(Text);
     }
-    public void setLabel1Text(String Text){
+
+    public void setLabel1Text(String Text) {
         label1.setText(Text);
     }
 }

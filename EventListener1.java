@@ -4,15 +4,16 @@ import java.awt.event.MouseEvent;
 public class EventListener1 extends MouseAdapter {
     private boolean flag = false;
     private boolean flaghelp = false;
-    private int id=0;
+    private int id = 0;
 
-    public void init(){
-        flag=false;
-        flaghelp=false;
+    public void init() {
+        flag = false;
+        flaghelp = false;
     }
+
     @Override
     public void mousePressed(MouseEvent e) {
-        int[] index=((MineButton)e.getSource()).getIndex();
+        int[] index = ((MineButton) e.getSource()).getIndex();
         if (e.getModifiersEx() == (MouseEvent.BUTTON3_DOWN_MASK + MouseEvent.BUTTON1_DOWN_MASK)) {
 //            System.out.println("j");
             flag = true;
@@ -23,7 +24,7 @@ public class EventListener1 extends MouseAdapter {
     @Override
     public void mouseClicked(MouseEvent e) {
 //        System.out.println("mouseClicked" + " " + id++ + " " + flag);
-        int[] index=((MineButton)e.getSource()).getIndex();
+        int[] index = ((MineButton) e.getSource()).getIndex();
         if (flag) {
             if (flaghelp) {
                 flaghelp = false;

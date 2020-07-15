@@ -2,30 +2,30 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MineButton extends JButton {
-    final Dimension size =new Dimension(42,34);
+    final Dimension size = new Dimension(42, 34);
     boolean opened;
     boolean marked;
     int id;
     int[] index;
 
-    public MineButton(int[] index){
-        this.index=index;
+    public MineButton(int[] index) {
+        this.index = index;
         this.setPreferredSize(size);
         this.setBackground(Color.yellow);
     }
 
-    public void init(){
-        opened=false;
-        marked=false;
-        id=0;
+    public void init() {
+        opened = false;
+        marked = false;
+        id = 0;
         this.setText("");
         this.setEnabled(true);
         this.setBackground(Color.yellow);
     }
 
-    public void setOpened(boolean opened){
-        this.opened=opened;
-        this.setText(""+id);
+    public void setOpened(boolean opened) {
+        this.opened = opened;
+        this.setText("" + id);
         this.setEnabled(false);
         this.setBackground(Color.green);
     }
@@ -36,7 +36,7 @@ public class MineButton extends JButton {
 
     public void setMarked(boolean marked) {
         this.marked = marked;
-        if(marked) this.setBackground(Color.gray);
+        if (marked) this.setBackground(Color.gray);
         else this.setBackground(Color.yellow);
     }
 
